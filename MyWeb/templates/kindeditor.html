@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static "kindeditor-4.1.10/themes/default/default.css" %}">
+    <link rel="stylesheet" href="{% static "css/bootstrap11.css" %}">
+    <script src="{% static "js/jquery-3.2.1.js" %}"></script>
+    <script src="{% static "kindeditor-4.1.10/kindeditor-all-min.js" %}"></script>
+</head>
+<body>
+<div style="margin-bottom: 50px" class="col-md-12">
+    <form action="{% url "article" %}" method="post" class="col-md-6">
+        <input type="text" name="title" class="form-control col-md-6">
+        <textarea id="content" name="content" class="form-control col-md-6"></textarea>
+        {% csrf_token %}
+        <input type="submit" value="submit">
+    </form>
+</div>
+
+<div>
+    <h1>文章列表</h1>
+    {% for article in articles %}
+    <div style="margin-bottom: 20px">
+        <ul>
+            <li>{{ article.title }}</li>
+            <li>{{ article.content|safe }}</li>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+
+</body>
+<script>
+    var csrfitems = document.getElementsByName("csrfmiddlewaretoken");
+    var csrftoken = "";
+    if(csrfitems.length > 0)
+    {
+        csrftoken = csrfitems[0].value;
+    }
+    $(function () {
+            initKindEditor();
+        });
+    function initKindEditor() {
+        $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+        });
+        var kind = KindEditor.create('#content', {
+            width: '900px',       // 文本框宽度(可以百分比或像素)
+            height: '300px',     // 文本框高度(只能像素)
+            minWidth: 200,       // 最小宽度（数字）
+            minHeight: 400,      // 最小高度（数字）
+            uploadJson: '{% url "upload_image" %}',
+            extraFileUploadParams : {
+                csrfmiddlewaretoken: csrftoken
+            },
+            items:[
+                'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'strikethrough', 'lineheight', 'removeformat', '|','undo', 'redo', '|', 'code', 'cut', 'copy', 'paste',
+                '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'insertorderedlist',
+                'insertunorderedlist', 'indent', 'outdent', 'subscript', 'superscript', 'selectall', '|', 'fullscreen',
+                '/', 'image', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak', 'anchor', 'link', 'unlink'
+            ]
+        });
+    }
+</script>
+</html>

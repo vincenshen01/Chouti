@@ -1,0 +1,244 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#pg-head{
+    height: 44px;
+    background-color: #2459a2;
+    line-height:44px;
+}
+
+.digg-logo {
+    width: 121px;
+    height: 23px;
+    background: url(../image/logo.png) no-repeat 0 0;
+    float: left;
+    margin-top: 11px;
+    margin-right: 25px;
+}
+
+.w{
+    width:1024px;
+    margin: 0 auto;
+}
+
+
+.left{
+    float: left;
+}
+
+.right{
+    float: right;
+}
+.menu{
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+#pg-head .menu a{
+    padding: 0 5px;
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    width: 50px;
+    text-align: center;
+}
+
+#pg-head .menu a:hover{
+    background-color: #396bb3;
+}
+
+.body-right{
+    width: 300px;
+    padding-top: 4px;
+    float: right;
+}
+
+
+
+a.no-comment-title {
+    background-color: #4767b2;
+    color: #f4f4f4;
+    min-width: 300px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+}
+
+
+.body-left{
+    width: 630px;
+    overflow: hidden;
+    margin-top: 3px;
+    float: left;
+}
+
+
+#pg-body .menu a{
+    padding: 1px 10px;
+    font-size:14px;
+    text-decoration: none;
+    color: green;
+}
+
+.bg-img{
+    background-image: url("../image/icon.png");
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+.image1{
+    background-position: 0 -19px;
+}
+
+.image2{
+    background-position: 0 -59px;
+}
+.image3{
+    background-position: 0 -140px;
+}
+.image4{
+    width: 18px;
+    height: 18px;
+    /*background-repeat: no-repeat;*/
+    /*background-position: 0 2px;*/
+}
+
+.icon img{
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+#pg-body .icon a{
+    padding: 1px 10px;
+    font-size:14px;
+    text-decoration: none;
+}
+
+.bottom{
+    position: absolute;
+    background-color: lavender;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+.note1{
+    height: 48px;
+    line-height: 48px;
+}
+
+.note2{
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    background-color: #dddddd;
+    text-align: center
+}
+
+.content1{
+    text-decoration: none;
+    color: #336699;
+    font-size: 14px;
+}
+
+.content2{
+    font-size: 12px;
+    color: dimgrey;
+}
+
+.content3{
+    font-size: 12px;
+    padding-left: 6px;
+    color: grey;
+}
+
+.content_img{
+    width: 10%;
+    height: 10%;
+}
+.content_img img{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.content_footer{
+    clear: both;
+    height: 40px;
+    line-height: 40px
+}
+
+.content_footer b{
+    font-weight: normal;
+    color: darkorange;
+}
+
+.content_footer i{
+    font-style: normal;
+}
+
+.span1{
+    padding:12px 1px 1px;
+    margin-left:1px;
+    border-left:2px solid;
+    font-size:0;
+    color: white;
+}
+
+
+.main-content {
+    width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+    height: auto !important;
+    min-height: 713px;
+    padding: 6px 28px 60px;
+    background-color: #fff;
+}
+
+.register-form input{
+    width: 350px;
+}
+
+.login-form input{
+    width: 350px;
+}
+
+.top-item {
+    padding-top: 17px;
+    padding-bottom: 14px;
+}
+
+.top-points .points-a {
+    width: 32px;
+    height: 22px;
+    line-height: 22px;
+    display: block;
+    color: #666;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    background-color: #f0f0f0;
+    float: left;
+}
+
+.top-item .top-content {
+    color: #333;
+    display: block;
+    margin-left: 40px;
+}
+

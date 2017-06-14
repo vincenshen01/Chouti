@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="alex oldboy"/>
+    <meta name="discription" content="oldboyedu"/>
+    <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
+    <link rel="shortcut icon" href="{% static "image/icon2.ico" %}"/>
+    <title>ChouTi</title>
+    <link rel="stylesheet" href="{% static "css/css.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/bootstrap11.css" %}">
+    <link rel="stylesheet" href="{% static "css/commons.css" %}">
+    <script src="{% static "js/jquery-3.2.1.js" %}"></script>
+    <script src="{% static "js/bootstrap.js" %}"></script>
+    <style>
+        .comment > .content{
+            margin-left: 30px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="pg-head">
+    <div class="w">
+        <a href="/" class="digg-logo"></a>
+        <div class="left menu">
+            <a href="#">全部</a>
+            <span class="span1"></span>
+            <a href="#">42区</a>
+            <span class="span1"></span>
+            <a href="#">段子</a>
+            <span class="span1"></span>
+            <a href="#">图片</a>
+            <span class="span1"></span>
+            <a href="#">挨踢1024</a>
+            <span class="span1"></span>
+            <a href="#">你问我答</a>
+        </div>
+        <div class="right menu">
+            {% if request.session.username %}
+                <a href="#" class="">动态</a>
+                <span class="span1"></span>
+                <a href="#" class="">通知</a>
+                <span class="span1"></span>
+                <a href="#" class="">个人中心</a>
+                <span class="span1"></span>
+                <a href="{% url "logout" %}" class="">注销</a>
+                <span class="is_login" style="display: none;">request.session.username</span>
+            {% else %}
+                <a href="#" class="" data-toggle="modal" data-target="#registerModal">注册</a>
+                <span class="span1"></span>
+                <a href="#" class="" data-toggle="modal" data-target="#loginModal">登录</a>
+            {% endif %}
+            <b style="font-weight: normal;color: white; padding:0 20px">抽屉网欢迎您!</b>
+        </div>
+    </div>
+
+</div>
+
+<div id="pg-body">
+    <div class="main-content">
+        <div class="body-left">
+            <div class="note1">
+                <div class="left menu">
+                    <a href="#">最热</a>
+                    <a href="#">最新</a>
+                    <a href="#">人类发布</a>
+                </div>
+                <div class="right menu">
+                    <a href="#">及时排序</a>
+                    <a href="#">24小时</a>
+                    <a href="#">3天</a>
+                    <a href="#" id="publish" class="btn btn-default"
+                       style="min-width: 100px; min-height: 25px; line-height: 25px">+
+                        发布</a>
+                </div>
+            </div>
+            <div class="note2">
+                <a href="#" style="color: darkorange;">21条入热榜，点击查看</a>
+            </div>
+            <div class="content">
+                {% for new in news %}
+                    <div>
+                        <div style="margin-top: 30px">
+                            <div class="left" style="width: 88%;">
+                                <p><a class="content1" {% if new.category == 3 %}
+                                      href="{{ MEDIA_URL }}{{ new.href }}" {% else %} href="{{ new.href }}" {% endif %}
+                                      target="_blank">{{ new.title }}</a></p>
+                                <a class="content1" {% if new.category == 3 %}
+                                   href="{{ MEDIA_URL }}{{ new.href }}" {% else %} href="{{ new.href }}" {% endif %}
+                                   target="_blank">
+                                    {{ new.summary| truncatechars:200 }}
+                                </a>
+                                <a class="content2">-{{ new.href|url_filter }}</a>
+                                <a class="content3" href="#">{{ new.get_category_display }}</a>
+                            </div>
+                            <div class="right content_img">
+                                <img src="{{ MEDIA_URL }}{{ new.image }}"/>
+                            </div>
+                        </div>
+                        <div class="content_footer">
+                            <div class="icon">
+                                <a class="bg-img image1" target="recommend" style="position: relative">
+                                    &nbsp;&nbsp;
+                                    <b class="recommend">{{ new.recommend }}</b>
+                                    <b class="new_id" style="display: none">{{ new.id }}</b>
+                                </a>
+                                <a class="bg-img image2" target="comment">
+                                    &nbsp;&nbsp;&nbsp;<b>{{ new.get_comment_nums }}</b>
+                                </a>
+                                <a class="bg-img image3" target="fav">&nbsp;&nbsp;&nbsp;收藏</a>
+                                <div style="width: 18px; height: 18px; display: inline-block">
+                                    <a style="overflow: hidden"><img
+                                            src="{{ MEDIA_URL }}{{ new.publisher.image }}"/></a>
+                                </div>
+                                <a class="image4">{{ new.publisher.username }}</a>
+                                <a>
+                                    <b>{{ new.add_time|time_filter }}前</b><i>入热榜</i>
+                                </a>
+                            </div>
+                            <div>
+                                <hr style="color: dimgrey;">
+                            </div>
+                        </div>
+                        <div class="comment-box-area" id="comment-box-area-8118680">
+                            <div class="pinglun arrow" id="comt-arrow-8118680"></div>
+                            <a class="pinglun close-comt" title="关闭"></a>
+                            <div class="corner comment-box clearfix" id="comment-box-8118680">
+                                <!-- 评论树形 -->
+                                <div class="user-comment">
+                                </div>
+
+                                <!-- 谣言类别显示相信还是置疑选项 -->
+
+                                <!-- 判断该新闻评论是否关闭 -->
+
+                                <!-- 评论输入框和回复框 -->
+                                <div class="huifu-top-box" id="huifu-top-box-8118680">
+                                    <div class="box-l txt-input-area-div-top corner no-corner-bottom">
+                                        <div id="lab-comment-top-8118680" class="lab-comment-top">回复  <span id="nick--8118680"></span>:</div>
+                                        <!-- 针对谣言文本输入框无效 -->
+                                        <textarea maxlength="150" name="txt-huifu-top" id="txt-huifu-top-8118680" class="txt-huifu txt-huifu-top" lang="8118680"></textarea>
+                                    </div>
+                                    <div class="box-r">
+                                        <a class="publish pub-icons add-pub-btn add-pub-btn-unvalid">评论</a>
+                                        <a class="loading-ico loading-ico-top pub-loading-top">发布中...</a>
+                                    </div>
+                                </div>
+                                <div class="tip-3" id="hidden-comt-8118680">
+                                    <a class="hiddenCom-Btn" lang="8118680"><em class="pinglun em2"></em><span style="cursor: pointer">收起</span></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!--  //页码部分-->
+            <div class="col-md-offset-4">
+                <ul class="pagination">
+                    {{ paginator.page_str|safe }}
+                </ul>
+            </div>
+        </div>
+        <div class="body-right">
+            <a class="no-comment-title">最热榜</a>
+            <div id="top-content-news">
+                {% for new in news %}
+                    <div class="top-item">
+                        <div class="top-points">
+                            <a href="#" class="points-a">397</a>
+                        </div>
+                        <a class="top-content" {% if new.category == 3 %}href="{{ MEDIA_URL }}{{ new.href }}" {% else %}
+                           href="{{ new.href }}" {% endif %}target="_blank">{{ new.title }}</a>
+                    </div>
+                {% endfor %}
+
+                <div class="top-item">
+                    <div class="top-points">
+                        <a href="/link/12249811" class="points-a">264</a>
+                    </div>
+                    <a class="top-content" href="/link/12249811" target="_blank">要...要射在里面了...!!</a>
+                </div>
+
+                <div class="top-item">
+                    <div class="top-points">
+                        <a href="/link/12250956" class="points-a">246</a>
+                    </div>
+                    <a class="top-content" href="/link/12250956" target="_blank">特种部队犬在交火时，为了保证安全要这样紧跟士兵~(GIF 1.9MB)
+                        ​​​​</a>
+                </div>
+
+                <div class="top-item">
+                    <div class="top-points">
+                        <a href="/link/12263021" class="points-a">186</a>
+                    </div>
+                    <a class="top-content" href="/link/12263021" target="_blank">同学们，请回到自己的座位上</a>
+                </div>
+
+                <div class="top-item">
+                    <div class="top-points">
+                        <a href="/link/12261476" class="points-a">181</a>
+                    </div>
+                    <a class="top-content" href="/link/12261476" target="_blank">现场太战斗了……俄罗斯一民居着火，爸爸先是把毯子扔下去让路人接着，然后把妻子和孩子扔了下去，最后自己在跳了下去</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom"></div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Register</h4>
+            </div>
+            <div class="modal-body register-body">
+                <form class="register-form col-md-offset-2">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Username:</label>
+                        {{ register_obj.username }}
+                        <span id="reg-username-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Password:</label>
+                        {{ register_obj.password }}
+                        <span id="reg-password-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Email:</label>
+                        {{ register_obj.email }}
+                        <span id="reg-email-error"></span>
+                    </div>
+                </form>
+                <div class="modal-footer register-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="register-submit">Register</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imageNews" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create News</h4>
+            </div>
+            <div class="modal-body register-body">
+                <form id="imageForm" class="register-form" action="{% url "ajax_upload_image" %}" method="post"
+                      enctype="multipart/form-data" target="ifr" autocomplete="off">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">上传图片</label>
+                        <input type="file" name="image" id="imageFile">
+                        <input type="text" id="image_url" name="image_url" style="display: none;" value="">
+                    </div>
+                    <div style="height: 200px; width: 400px">
+                        <img id="prevImage" src="" style="height: 100px; width: 100px; display: none;">
+                    </div>
+                    <div class="form-group col-md-11">
+                        <label class="control-label">图片描述</label>
+                        <textarea name="title" id="title" cols="20" rows="5" class="form-control"></textarea>
+                    </div>
+                    {% csrf_token %}
+                    <div class="modal-footer register-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="image-submit">上传</button>
+                    </div>
+                </form>
+                <iframe name="ifr" id="ifr" onload="successBack()" style="display: none"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Login</h4>
+            </div>
+            <div class="modal-body col-md-offset-2">
+                <form class="login-form">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Username:</label>
+                        {{ login_obj.login_username }}
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Password:</label>
+                        {{ login_obj.login_password }}
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Code:</label>
+                        <input type="text" name="code" class="form-control" id="login_code">
+                        <img id="code" src="{% url "identify_code" %}" alt="">
+                        <span id="login-error"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="login-submit">Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script>
+    $("a[target='recommend']").click(function () {
+        var ths = $(this);
+        var user = $(".is_login").text();
+        var news_id = $(this).children(".new_id").text();
+        var num = $(this).children(".recommend").text();
+        var recommend = $(this).children(".recommend");
+        if (user) {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+            });
+            $.ajax({
+                type: "POST",
+                data: {news_id: news_id},
+                url: "{% url "recommend" %}",
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        var new_num1 = parseInt(num) + 1;
+                        recommend.text(new_num1);
+                        ZMM(ths, "+1");
+                    } else {
+                        var new_num2 = parseInt(num) - 1;
+                        recommend.text(new_num2);
+                        ZMM(ths, "-1");
+                    }
+                }
+            });
+        } else {
+            $('#loginModal').modal("show")
+        }
+    });
+
+    function ZMM(ths, txt) {
+        var fontSize = 5;
+        var left = 25;
+        var top = -10;
+        var opacity = 1;
+
+        var tag = document.createElement('span');
+        tag.innerHTML = txt;
+        tag.style.position = "absolute";
+        tag.style.fontSize = fontSize + 'px';
+        tag.style.left = left + 'px';
+        tag.style.top = top + 'px';
+        tag.style.opacity = opacity;
+        $(ths).append(tag);
+
+        var obj = setInterval(function () {
+            fontSize = fontSize + 5;
+            left = left + 2;
+            top = top - 5;
+            opacity = opacity - 0.1;
+            tag.style.fontSize = fontSize + 'px';
+            tag.style.left = left + 'px';
+            tag.style.top = top + 'px';
+            tag.style.opacity = opacity;
+            if (left > 60) {
+                clearInterval(obj);
+                tag.remove();
+            }
+        }, 100)
+    }
+
+    $("#register-submit").click(function () {
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+        });
+        var username = $("#id_username").val();
+        var password = $("#id_password").val();
+        var email = $("#id_email").val();
+        $.ajax({
+            type: "POST",
+            data: {username: username, password: password, email: email},
+            url: "{% url "register" %}",
+            dataType: "json",
+            success: function (data) {
+                if (data.status) {
+                    $(".register-body").html("<div style='min-height:100px; text-align:center;' >恭喜您注册成功!<a href='#' data-toggle='modal' data-target='#loginModal'>点击我登录...</a></div>");
+                } else {
+                    $("#reg-username-error").text(data.error.username).css({"color": "red"});
+                    $("#reg-password-error").text(data.error.password).css({"color": "red"});
+                    $("#reg-email-error").text(data.error.email).css({"color": "red"});
+                }
+            }
+        });
+        return false;
+    });
+
+    $("#login-submit").click(function () {
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+        });
+        var login_username = $("#id_login_username").val();
+        var login_password = $("#id_login_password").val();
+        var code = $("#login_code").val();
+        $.ajax({
+            type: "POST",
+            data: {login_username: login_username, login_password: login_password, code: code},
+            url: "{% url "login" %}",
+            dataType: "json",
+            success: function (data) {
+                if (data.status) {
+                    window.location.href = "{% url "index" %}";
+                } else {
+                    $("#login-error").text(data.error).css({"color": "red"});
+                }
+            }
+        });
+        return false;
+    });
+
+    $("#id_login_username").focus(function () {
+        $("#login-username-error").text("");
+    });
+    $("#id_login_password").focus(function () {
+        $("#login-password-error").text("");
+    });
+
+    $("#imageFile").change(function () {
+        $("#imageForm").submit();
+    });
+
+    function successBack() {
+        var v = $("#ifr").contents().find("body").html();
+        var obj = JSON.parse(v);
+        if (obj.status) {
+            var image_url = {{ MEDIA_URL }}+obj.data;
+            $("#prevImage").attr("src", image_url).css("display", "block");
+            $("#image_url").val(obj.data);
+        } else {
+            alert(obj.error)
+        }
+        if (obj.index) {
+            window.location.href = "{% url "index" %}";
+        }
+    }
+
+    $("#publish").click(function () {
+        var user = $(".is_login").text();
+        if (user) {
+            $('#imageNews').modal("show")
+        } else {
+            $('#loginModal').modal("show")
+        }
+    });
+
+    $("#code").click(function () {
+        $(this)[0].src = $(this)[0].src + "?";
+    });
+
+    $(".image2").click(function () {
+        $(this).parent().parent().next(".comment-box-area").css("display", "block");
+        var ths = $(this).parent().parent().next(".comment-box-area");
+        var news_id = parseInt($(this).parent().find(".new_id").text());
+        var url = "/user_comment/"+news_id+"/";
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data: {},
+            success: function (data) {
+                if(data.status){
+                    ths.find(".user-comment").html(data.data);
+                }
+            }
+        })
+    });
+
+    $(".close-comt").click(function () {
+       $(this).parent().css("display", "none")
+    });
+
+    $(".hiddenCom-Btn").click(function () {
+        $(this).parent().parent().parent().css("display", "none")
+    });
+
+    $(".publish").click(function () {
+        var text = $(this).parent().parent().find(".txt-huifu").val();
+        $(this).parent().parent().parent().find(".user-comment:first-child").append('<div class="item">--'+text+'</div>');
+    })
+
+</script>
+
+</html>
